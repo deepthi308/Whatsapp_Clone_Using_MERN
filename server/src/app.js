@@ -6,6 +6,8 @@ const cookieParser = require("cookie-parser");
 const compression = require("compression");
 const fileUpload = require("express-fileupload");
 const cors = require("cors");
+const createHttpError = require("http-errors");
+const routes = require("./routes/index");
 require("dotenv").config();
 
 // Create express server
@@ -49,8 +51,26 @@ app.use(
   cors()
 );
 
-app.post("/", (req, res) => {
-  res.send(req.body);
+// Routes
+app.use("/api/v1", routes);
+
+app.post("/test", (req, res) => {
+  throw createHttpError.BadRequest("This route has an error");
+});
+
+app.use((req, res, next) => {
+  throw createHttpError.NotFound("This route doesn't exist");
+});
+
+// Error handling
+app.use(async (err, req, res, next) => {
+  res.status(err.status || 500);
+  res.send({
+    error: {
+      status: err.status || 500,
+      message: err.message,
+    },
+  });
 });
 
 module.exports = app;

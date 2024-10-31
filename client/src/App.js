@@ -1,13 +1,7 @@
-import { ArrowIcon, ChatIcon } from "./svg";
+import { CallIcon, DocumentIcon } from "./svg";
 
 function App() {
-  return (
-    <div>
-      <h1>Welcome to the frontend</h1>
-      <ChatIcon />
-      <ArrowIcon />
-    </div>
-  );
+  return <div className="dark"></div>;
 }
 
 export default App;
